@@ -33,4 +33,5 @@ public interface UserRepository {
 
   @Select("SELECT * FROM users WHERE id <> #{excludedId}")
   List<UserEntity> findAllExcept(Integer excludedId);
+  // RoomControllerのfindAllExceptで取得したidを引数として持ってきている
 }

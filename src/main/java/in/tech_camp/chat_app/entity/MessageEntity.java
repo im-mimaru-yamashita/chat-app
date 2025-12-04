@@ -1,6 +1,6 @@
 package in.tech_camp.chat_app.entity;
 
-import java.security.Timestamp;
+import java.time.LocalDateTime;
 
 import lombok.Data;
 
@@ -9,7 +9,7 @@ public class MessageEntity {
   private Integer id;
   private String content;
   private String image;
-  private Timestamp createdAt;
+  private LocalDateTime createdAt;
   private UserEntity user;
   private RoomEntity room;
 }

@@ -1,5 +1,7 @@
 package in.tech_camp.chat_app.entity;
 
+import java.util.List;
+
 import lombok.Data;
 
 @Data

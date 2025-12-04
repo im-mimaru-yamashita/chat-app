@@ -79,8 +79,8 @@ public class RoomController {
       creatorRoomUser.setUser(creatorUser);
       roomUserRepository.insert(creatorRoomUser);
 
-      if (roomForm.getSelectUserIds() != null) {
-        for (Integer userId : roomForm.getSelectUserIds()) {
+      if (roomForm.getMemberIds() != null) {
+        for (Integer userId : roomForm.getMemberIds()) {
           if (userId.equals(currentUser.getId())) {
             continue;
           }

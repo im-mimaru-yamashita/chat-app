@@ -12,8 +12,4 @@ public class RoomForm {
   private String name;
 
   private List<Integer> memberIds;
-
-  public List<Integer> getSelectUserIds() {
-        return this.memberIds;
-    }
 }

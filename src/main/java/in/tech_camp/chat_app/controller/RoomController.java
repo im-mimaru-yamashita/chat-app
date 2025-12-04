@@ -57,7 +57,32 @@ public class RoomController {
     RoomEntity roomEntity = new RoomEntity();
     roomEntity.setName(roomForm.getName());
     try {
+      // これより下はGeminiに聞いて追記（room_usersテーブルにデータを追加）
       roomRepository.insert(roomEntity);
+      UserEntity creatorUser = new UserEntity();
+      creatorUser.setId(currentUser.getId());
+
+      RoomUserEntity creatorRoomUser = new RoomUserEntity();
+      creatorRoomUser.setRoom(roomEntity);
+      creatorRoomUser.setUser(creatorUser);
+      roomUserRepository.insert(creatorRoomUser);
+
+      if (roomForm.getSelectUserIds() != null) {
+        for (Integer userId : roomForm.getSelectUserIds()) {
+          if (userId.equals(currentUser.getId())) {
+            continue;
+          }
+          UserEntity selectedUser = new UserEntity();
+          selectedUser.setId(userId);
+
+          RoomUserEntity selectedRoomUser = new RoomUserEntity();
+          selectedRoomUser.setRoom(roomEntity);
+          selectedRoomUser.setUser(selectedUser);
+          roomUserRepository.insert(selectedRoomUser); // room_usersへの保存
+        }
+      }
+
+
     } catch (Exception e) {
       System.out.println("エラー：" + e);
       List<UserEntity> users = userRepository.findAllExcept(currentUser.getId());
@@ -65,24 +90,6 @@ public class RoomController {
       model.addAttribute("roomForm", new RoomForm());
       return "rooms/new";
     }
-
-    List<Integer> memberIds = roomForm.getMemberIds();
-    for (Integer userId : memberIds) {
-      UserEntity userEntity = userRepository.findById(userId);
-      RoomUserEntity roomUserEntity = new RoomUserEntity();
-      roomUserEntity.setRoom(roomEntity);
-      roomUserEntity.setUser(userEntity);
-      try {
-        roomUserRepository.insert(roomUserEntity);
-      } catch (Exception e) {
-        System.out.println("エラー：" + e);
-        List<UserEntity> users = userRepository.findAllExcept(currentUser.getId());
-        model.addAttribute("users", users);
-        model.addAttribute("roomForm", new RoomForm());
-        return "rooms/new";
-      }
-    }
     return "redirect:/";
   }
-  
 }
